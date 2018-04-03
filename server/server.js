@@ -30,19 +30,14 @@ io.on('connection', (socket) => {
         console.log('createEmail', newEmail);
     });
 
-
-
-    socket.on('createMessage', (message) => {
-        console.log('Create message', message);
-        io.emit('newMessage', generateMessage(message.from, message.text));
-
-        //socket.broadcast.emit('newMessage', {...message, createdAt: new Date().getTime()})
+    socket.on('createMessage', (message, callback) => {
+        const msg = generateMessage(message.from, message.text);
+        console.log('Create message', msg);
+        io.emit('newMessage', msg);
+        callback('This is from the server');
     });
 });
 
 server.listen(port, () => console.log(`Server is up on port ${port}...`));
-
-
-
 
 
