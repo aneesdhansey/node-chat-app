@@ -13,26 +13,32 @@ socket.on('newEmail', function (email) {
 });
 
 socket.on('newMessage', function (message) {
-    console.log('New message', message);
+
     var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = $('#message-template').html();
 
-    var li = $('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
+    html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
 
-    $('#messages').append(li);
+    $('#messages').append(html);
 });
 
 socket.on('newLocationMessage', function (message) {
 
     var formattedTime = moment(message.createdAt).format('h:mm a');
 
-    var li = $('<li></li>');
-    var a = $('<a target="_blank">My current location</a>');
-    li.text(`${message.from} ${formattedTime}: `);
-    a.attr('href', message.url);
-    li.append(a);
+    var template = $('#location-message-template').html();
 
-    $('#messages').append(li);
+    html = Mustache.render(template, {
+        from: message.from,
+        url: message.url,
+        createdAt: formattedTime
+    });
+
+    $('#messages').append(html);
 });
 
 $(document).ready(function () {
