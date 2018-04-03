@@ -19,6 +19,26 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('User disconnected...');
     });
+
+    socket.on('createEmail', (newEmail) => {
+        console.log('createEmail', newEmail);
+    });
+
+    socket.emit('newEmail', {
+        from: 'mike@example.com',
+        text: 'Hey. What is going on.',
+        createdAt: new Date().getTime()
+    });
+
+    socket.on('createMessage', (message) => {
+        console.log('Create message', message);
+    });
+
+    socket.emit('newMessage', {
+        from: 'fluffy@gmail.com',
+        text: 'Hi from fluffy',
+        createdAt: new Date().getTime()
+    });
 });
 
 server.listen(port, () => console.log(`Server is up on port ${port}...`));
